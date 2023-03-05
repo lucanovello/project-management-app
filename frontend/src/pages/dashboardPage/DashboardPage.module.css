@@ -1,0 +1,10 @@
+.dashboardPageContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    font-family: var(--header-font-family);
+    font-size: var(--header-font-size);
+    font-weight: 900;
+}
