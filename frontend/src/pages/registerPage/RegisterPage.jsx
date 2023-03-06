@@ -1,5 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { FaUser } from 'react-icons/fa';
+import { register, reset } from '../../features/auth/authSlice';
 import { Link } from 'react-router-dom';
 import registerPageStyle from './RegisterPage.module.css';
 
@@ -8,22 +12,52 @@ function RegisterPage() {
         name: '',
         email: '',
         password: '',
-        passwordConfirm: '',
+        password2: '',
     });
-    const { name, email, password, passwordConfirm } = formData;
+    const { name, email, password, password2 } = formData;
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        if (isError) {
+            toast.error(message);
+        }
+
+        if (isSuccess || user) {
+            navigate('/');
+        }
+
+        dispatch(reset());
+    }, [user, isError, isSuccess, message, navigate, dispatch]);
 
     const onChangeHandler = (e) => {
         setFormData((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.value,
         }));
-        console.log(e);
     };
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
-        console.log('onSubmitHandler');
+        if (password !== password2) {
+            toast.error('Passwords do not match');
+        } else {
+            const userData = {
+                name,
+                email,
+                password,
+            };
+
+            dispatch(register(userData));
+        }
     };
+
+    if (isLoading) {
+        return <p>Loading...</p>;
+    }
 
     return (
         <main className={registerPageStyle.registerPageContainer}>
@@ -76,11 +110,12 @@ function RegisterPage() {
                     <input
                         type="password"
                         className={registerPageStyle.registerPageFormInput}
-                        id="passwordConfirm"
-                        name="passwordConfirm"
-                        value={passwordConfirm}
+                        id="password2"
+                        name="password2"
+                        value={password2}
                         placeholder="Please confirm password"
                         onChange={onChangeHandler}
+                        autoComplete="disable"
                     />
                 </div>
                 <div className={registerPageStyle.registerPageFormRow}>
