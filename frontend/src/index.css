@@ -12,6 +12,9 @@
     --header-font-size: 32px;
     --body-font-family: 'Inter', sans-serif;
     --body-font-size: 16px;
+    --container-padding: 4vh 10%;
+    --sidebar-width: calc(150px + 4%);
+    --topbar-height: calc(60px + 1vh);
 }
 
 /* GLOBAL STYLES ====================================== */

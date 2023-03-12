@@ -1,8 +1,8 @@
 .appContainer {
     width: 100%;
-    padding: 4vh 10%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    overflow-x: hidden;
 }

@@ -10,7 +10,6 @@ function GoalForm() {
 
     const onSubmit = (e) => {
         e.preventDefault();
-
         dispatch(createGoal({ text }));
         setText('');
     };
@@ -20,10 +19,11 @@ function GoalForm() {
             <input
                 type="text"
                 className={goalFormStyle.goalFormInput}
-                name="text"
-                id="text"
+                name="goal"
+                id="goal"
                 placeholder="Enter new goal"
                 value={text}
+                autoComplete="goal"
                 onChange={(e) => setText(e.target.value)}
             />
 

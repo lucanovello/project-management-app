@@ -1,5 +1,6 @@
 .registerPageContainer {
     width: 100%;
+    padding: var(--container-padding);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

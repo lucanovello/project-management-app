@@ -1,53 +1,34 @@
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import GoalForm from '../../components/goals/GoalForm';
-import GoalItem from '../../components/goals/GoalItem';
+import EmployeeForm from '../../components/employees/EmployeeForm';
+import EmployeeTable from '../../components/employees/EmployeeTable';
+import SideNavbar from '../../components/sideNavbar/SideNavbar';
 import dashboardPageStyle from './DashboardPage.module.css';
 
 function DashboardPage() {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     const { user } = useSelector((state) => state.auth);
-    const { goals, isLoading, isError, message } = useSelector((state) => state.goals);
 
     useEffect(() => {
-        if (isError) {
-            console.log(message);
-        }
-
         if (!user) {
             navigate('/login');
         }
-    }, [user, navigate, isError, message, dispatch]);
+    }, [user, navigate]);
 
-    if (isLoading) {
-        return <p className={dashboardPageStyle.dashboardPageContainer}>Loading...</p>;
-    }
     return (
         <>
+            <SideNavbar />
             <section className={dashboardPageStyle.dashboardPageContainer}>
                 <h1 className={dashboardPageStyle.dashboardPageTitle}>
-                    Welcome {user && user.name}
+                    Welcome {user && `${user.firstName} ${user.lastName}`}
                 </h1>
-                <p className={dashboardPageStyle.dashboardPageSubtitle}>Goals Dashboard</p>
-            </section>
+                <EmployeeForm />
 
-            <GoalForm />
-
-            <section className={dashboardPageStyle.dashboardPageGoalsWrapper}>
-                {goals.length > 0 ? (
-                    <div className={dashboardPageStyle.dashboardPageGoalsList}>
-                        {goals.map((goal) => (
-                            <GoalItem key={goal._id} goal={goal} />
-                        ))}
-                    </div>
-                ) : (
-                    <h3 className={dashboardPageStyle.dashboardPageNoGoalText}>
-                        You have not set any goals
-                    </h3>
-                )}
+                <>
+                    <EmployeeTable />
+                </>
             </section>
         </>
     );

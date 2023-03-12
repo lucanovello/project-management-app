@@ -1,5 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { FaSignInAlt, FaSignOutAlt, FaUser, FaCrown } from 'react-icons/fa';
+import { FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa';
+import { MdDashboard } from 'react-icons/md';
+import { HiUserGroup } from 'react-icons/hi2';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout, reset } from '../../features/auth/authSlice';
 import topNavbarStyle from './TopNavbar.module.css';
@@ -18,17 +20,28 @@ function TopNavBar() {
     return (
         <header className={topNavbarStyle.topNavbarContainer}>
             <Link to="/" className={topNavbarStyle.topNavbarLogoWrapper}>
-                <FaCrown className={topNavbarStyle.topNavbarLogoIcon} />
-                <p className={topNavbarStyle.topNavbarLogoText}>Project Managament App</p>
+                <HiUserGroup className={topNavbarStyle.topNavbarLogoIcon} />
+                <p className={topNavbarStyle.topNavbarLogoText}>TeamBuilder</p>
             </Link>
 
             <ul className={topNavbarStyle.topNavbarMenuWrapper}>
                 {user ? (
-                    <li>
-                        <button className={topNavbarStyle.topNavbarMenuItemBtn} onClick={onLogout}>
-                            <FaSignOutAlt /> <p>Logout</p>
-                        </button>
-                    </li>
+                    <>
+                        <li>
+                            <Link to="/dashboard" className={topNavbarStyle.topNavbarMenuItem}>
+                                <MdDashboard className={topNavbarStyle.topNavbarMenuItemIcon} />
+                                <p className={topNavbarStyle.topNavbarMenuItemText}>Dashboard</p>
+                            </Link>
+                        </li>
+                        <li>
+                            <button
+                                className={topNavbarStyle.topNavbarMenuItemBtn}
+                                onClick={onLogout}
+                            >
+                                <FaSignOutAlt /> <p>Logout</p>
+                            </button>
+                        </li>
+                    </>
                 ) : (
                     <>
                         {' '}

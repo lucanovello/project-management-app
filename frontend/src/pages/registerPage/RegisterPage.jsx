@@ -9,12 +9,13 @@ import registerPageStyle from './RegisterPage.module.css';
 
 function RegisterPage() {
     const [formData, setFormData] = useState({
-        name: '',
+        firstName: '',
+        lastName: '',
         email: '',
         password: '',
         password2: '',
     });
-    const { name, email, password, password2 } = formData;
+    const { firstName, lastName, email, password, password2 } = formData;
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -27,7 +28,7 @@ function RegisterPage() {
         }
 
         if (isSuccess || user) {
-            navigate('/');
+            navigate('/dashboard');
         }
 
         dispatch(reset());
@@ -46,7 +47,8 @@ function RegisterPage() {
             toast.error('Passwords do not match');
         } else {
             const userData = {
-                name,
+                firstName,
+                lastName,
                 email,
                 password,
             };
@@ -77,10 +79,21 @@ function RegisterPage() {
                     <input
                         type="text"
                         className={registerPageStyle.registerPageFormInput}
-                        id="name"
-                        name="name"
-                        value={name}
-                        placeholder="Enter your name"
+                        id="firstName"
+                        name="firstName"
+                        value={firstName}
+                        placeholder="Enter your first name"
+                        onChange={onChangeHandler}
+                    />
+                </div>
+                <div className={registerPageStyle.registerPageFormRow}>
+                    <input
+                        type="text"
+                        className={registerPageStyle.registerPageFormInput}
+                        id="lastName"
+                        name="lastName"
+                        value={lastName}
+                        placeholder="Enter your last name"
                         onChange={onChangeHandler}
                     />
                 </div>
