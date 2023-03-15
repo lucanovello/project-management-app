@@ -1,7 +1,7 @@
-import { FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa';
-import { MdDashboard } from 'react-icons/md';
+import { FaSignOutAlt } from 'react-icons/fa';
+import { MdDashboard, MdGroup, MdWork } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { logout, reset } from '../../features/auth/authSlice';
 import sideNavbarStyle from './SideNavbar.module.css';
 
@@ -22,20 +22,46 @@ function SideNavbar() {
                 <>
                     <ul className={sideNavbarStyle.sideNavbarMenuWrapper}>
                         <li>
-                            <Link to="/dashboard" className={sideNavbarStyle.sideNavbarMenuItem}>
+                            <NavLink
+                                to="/dashboard"
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? sideNavbarStyle.sideNavbarMenuItemActive
+                                        : sideNavbarStyle.sideNavbarMenuItem
+                                }
+                                end
+                            >
                                 <MdDashboard className={sideNavbarStyle.sideNavbarMenuItemIcon} />
                                 <p className={sideNavbarStyle.sideNavbarMenuItemTitle}>Dashboard</p>
-                            </Link>
+                            </NavLink>
                         </li>
                         <li>
-                            <Link to="/dashboard" className={sideNavbarStyle.sideNavbarMenuItem}>
+                            <NavLink
+                                to="/dashboard/employees"
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? sideNavbarStyle.sideNavbarMenuItemActive
+                                        : sideNavbarStyle.sideNavbarMenuItem
+                                }
+                                end
+                            >
+                                <MdGroup className={sideNavbarStyle.sideNavbarMenuItemIcon} />
                                 <p className={sideNavbarStyle.sideNavbarMenuItemText}>Employees</p>
-                            </Link>
+                            </NavLink>
                         </li>
                         <li>
-                            <Link to="/dashboard" className={sideNavbarStyle.sideNavbarMenuItem}>
-                                <p className={sideNavbarStyle.sideNavbarMenuItemText}>Customers</p>
-                            </Link>
+                            <NavLink
+                                to="/dashboard/calendar"
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? sideNavbarStyle.sideNavbarMenuItemActive
+                                        : sideNavbarStyle.sideNavbarMenuItem
+                                }
+                                end
+                            >
+                                <MdWork className={sideNavbarStyle.sideNavbarMenuItemIcon} />
+                                <p className={sideNavbarStyle.sideNavbarMenuItemText}>Calendar</p>
+                            </NavLink>
                         </li>
                     </ul>
                     <button className={sideNavbarStyle.sideNavbarMenuItemBtn} onClick={onLogout}>
@@ -43,20 +69,7 @@ function SideNavbar() {
                     </button>
                 </>
             ) : (
-                <ul className={sideNavbarStyle.sideNavbarMenuWrapper}>
-                    <li>
-                        <Link to="/login" className={sideNavbarStyle.sideNavbarMenuItem}>
-                            <FaSignInAlt className={sideNavbarStyle.sideNavbarMenuItemIcon} />
-                            <p className={sideNavbarStyle.sideNavbarMenuItemText}>Login</p>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/register" className={sideNavbarStyle.sideNavbarMenuItem}>
-                            <FaUser className={sideNavbarStyle.sideNavbarMenuItemIcon} />
-                            <p className={sideNavbarStyle.sideNavbarMenuItemText}>Register</p>
-                        </Link>
-                    </li>
-                </ul>
+                <></>
             )}
         </header>
     );

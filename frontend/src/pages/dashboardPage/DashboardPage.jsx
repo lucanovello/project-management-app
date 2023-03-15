@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import EmployeeForm from '../../components/employees/EmployeeForm';
-import EmployeeTable from '../../components/employees/EmployeeTable';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import SideNavbar from '../../components/sideNavbar/SideNavbar';
+import CalendarPage from './CalendarPage';
 import dashboardPageStyle from './DashboardPage.module.css';
+import EmployeesPage from './EmployeesPage';
 
 function DashboardPage() {
     const navigate = useNavigate();
@@ -21,14 +21,10 @@ function DashboardPage() {
         <>
             <SideNavbar />
             <section className={dashboardPageStyle.dashboardPageContainer}>
-                <h1 className={dashboardPageStyle.dashboardPageTitle}>
-                    Welcome {user && `${user.firstName} ${user.lastName}`}
-                </h1>
-                <EmployeeForm />
-
-                <>
-                    <EmployeeTable />
-                </>
+                <Routes>
+                    <Route path="/employees" element={<EmployeesPage />} />
+                    <Route path="/calendar" element={<CalendarPage />} />
+                </Routes>
             </section>
         </>
     );

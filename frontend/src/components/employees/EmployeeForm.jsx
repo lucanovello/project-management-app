@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createEmployee } from '../../features/employees/employeeSlice';
 import employeeStyle from './Employees.module.css';
@@ -10,6 +10,9 @@ function EmployeeForm() {
         email: '',
         phone: '',
         address: '',
+        city: '',
+        province: '',
+        postalCode: '',
         position: '',
         salary: 15.0,
         hireDate: Date.now(),
@@ -18,12 +21,11 @@ function EmployeeForm() {
     };
     const [employee, setEmployee] = useState(initialState);
 
-    useEffect(() => {}, [employee]);
-
     const dispatch = useDispatch();
 
     const onSubmit = (e) => {
         e.preventDefault();
+
         dispatch(createEmployee(employee));
         setEmployee(initialState);
     };
@@ -49,8 +51,18 @@ function EmployeeForm() {
                         id="lastName"
                         placeholder="Last Name"
                         value={employee.lastName}
-                        autoComplete="employee"
+                        autoComplete="lastName"
                         onChange={(e) => setEmployee({ ...employee, lastName: e.target.value })}
+                    />
+                    <input
+                        type="text"
+                        className={employeeStyle.employeeFormInput}
+                        name="email"
+                        id="email"
+                        placeholder="Email"
+                        value={employee.email}
+                        autoComplete="email"
+                        onChange={(e) => setEmployee({ ...employee, email: e.target.value })}
                     />
                 </div>
 
@@ -68,12 +80,32 @@ function EmployeeForm() {
                     <input
                         type="text"
                         className={employeeStyle.employeeFormInput}
-                        name="email"
-                        id="email"
-                        placeholder="Email"
-                        value={employee.email}
-                        autoComplete="email"
-                        onChange={(e) => setEmployee({ ...employee, email: e.target.value })}
+                        name="city"
+                        id="city"
+                        placeholder="City"
+                        value={employee.city}
+                        autoComplete="city"
+                        onChange={(e) => setEmployee({ ...employee, city: e.target.value })}
+                    />
+                    <input
+                        type="text"
+                        className={employeeStyle.employeeFormInput}
+                        name="province"
+                        id="province"
+                        placeholder="Province"
+                        value={employee.province}
+                        autoComplete="province"
+                        onChange={(e) => setEmployee({ ...employee, province: e.target.value })}
+                    />
+                    <input
+                        type="text"
+                        className={employeeStyle.employeeFormInput}
+                        name="postalCode"
+                        id="postalCode"
+                        placeholder="Postal Code"
+                        value={employee.postalCode}
+                        autoComplete="postalCode"
+                        onChange={(e) => setEmployee({ ...employee, postalCode: e.target.value })}
                     />
                 </div>
 
@@ -108,12 +140,9 @@ function EmployeeForm() {
                         autoComplete="salary"
                         step="0.01"
                         min="0.00"
-                        max="100"
                         onChange={(e) => setEmployee({ ...employee, salary: e.target.value })}
                     />
-                </div>
 
-                <div className={employeeStyle.employeeFormInputRow}>
                     <input
                         type="text"
                         className={employeeStyle.employeeFormInput}
@@ -122,6 +151,8 @@ function EmployeeForm() {
                         placeholder="Social Insurance Number"
                         value={employee.sin}
                         autoComplete="sin"
+                        minLength={9}
+                        maxLength={9}
                         onChange={(e) => setEmployee({ ...employee, sin: e.target.value })}
                     />
                     <input

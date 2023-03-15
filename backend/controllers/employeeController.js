@@ -1,5 +1,4 @@
 const asyncHandler = require('express-async-handler');
-
 const Employee = require('../models/employeeModel');
 
 // @desc    Get employees
@@ -33,7 +32,6 @@ const setEmployee = asyncHandler(async (req, res) => {
         res.status(400);
         throw new Error('email already exists');
     }
-    console.log(emailExists);
 
     const employee = await Employee.create({
         firstName: req.body.firstName,
@@ -47,6 +45,7 @@ const setEmployee = asyncHandler(async (req, res) => {
         isActive: req.body.isActive,
         sin: req.body.sin,
     });
+
     res.status(200).json(employee);
 });
 

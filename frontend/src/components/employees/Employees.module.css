@@ -1,7 +1,6 @@
 /* EMPLOYEE FORM -------------------------------*/
 .employeeFormContainer {
     width: 100%;
-    padding: 0 5%;
     margin-bottom: 6vh;
     display: flex;
     flex-direction: column;
@@ -11,7 +10,6 @@
 
 .employeeFormWrapper {
     width: 100%;
-    max-width: 1000px;
     min-width: 500px;
     display: flex;
     flex-direction: column;
@@ -25,7 +23,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    column-gap: 20px;
+    column-gap: 10px;
 }
 
 .employeeFormInput {
@@ -35,20 +33,21 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: var(--header-font-family);
-    font-size: 0.8rem;
+    font-family: var(--body-font-family);
+    font-size: calc(var(--body-font-size) * 0.9);
+    background: hsl(0, 0%, 92%);
     border: 1px solid hsl(0, 0%, 65%);
-    border-radius: 5px;
+    border-radius: 2px;
 }
 .employeeFormInput::placeholder {
-    color: hsl(0, 0%, 65%);
+    color: hsl(0, 0%, 60%);
 }
 
 .employeeFormBtn {
     width: 100%;
     min-width: 100px;
     height: 100%;
-    padding: 1.6vh 10px;
+    padding: 2vh 10px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -61,7 +60,7 @@
     cursor: pointer;
     column-gap: 5px;
     white-space: nowrap;
-    transition: 0.2s ease-out;
+    transition: 0.05s ease;
 }
 
 .employeeFormBtn:hover {
@@ -87,10 +86,11 @@
 .employeeTableTitle {
     margin-bottom: 2vh;
     font-family: var(--header-font-family);
-    font-size: var(--body-font-size);
-    font-weight: 600;
+    font-size: calc(var(--header-font-size) * 0.9);
+    font-weight: 700;
     text-align: left;
-    letter-spacing: -0.5px;
+    text-transform: uppercase;
+    letter-spacing: -1px;
     line-height: 1;
     color: #787878;
 }
@@ -115,9 +115,9 @@
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-columns: repeat(3, 1fr) 1.5fr repeat(4, 1fr) 0.15fr;
+    grid-template-columns: repeat(2, 1fr) 1.5fr repeat(3, 1fr) repeat(2, 0.8fr) 0.2fr;
     justify-content: center;
-    align-items: baseline;
+    align-items: center;
     position: relative;
     border: 1px solid hsl(0, 0%, 20%);
 }
@@ -144,7 +144,7 @@
 .employeeTableHeaderTitle,
 .employeeTableHeaderTitleBtn {
     font-family: var(--body-font-family);
-    font-size: 12px;
+    font-size: calc(var(--body-font-size) * 0.8);
     font-weight: 600;
     color: white;
     background: hsl(0, 0%, 40%);
@@ -154,7 +154,7 @@
 .employeeItem {
     width: 100%;
     height: 100%;
-    padding: 1vh 1.5em;
+    padding: 1vh 1em;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -168,7 +168,7 @@
 
 .employeeItem {
     font-family: var(--body-font-family);
-    font-size: 12px;
+    font-size: calc(var(--body-font-size) * 0.8);
     font-weight: 400;
     border-right: 1px solid hsl(0, 0%, 20%);
 }
@@ -197,11 +197,12 @@
     align-items: center;
     position: relative;
     font-family: var(--body-font-family);
-    font-size: 12px;
+    font-size: calc(var(--body-font-size));
     font-weight: 400;
     color: white;
     background: hsl(0, 20%, 35%);
     border: none;
+    border-radius: 0;
     cursor: pointer;
     transition: 0.05s ease;
 }

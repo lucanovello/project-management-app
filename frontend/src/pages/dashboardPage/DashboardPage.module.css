@@ -1,5 +1,6 @@
 .dashboardPageContainer {
     width: 100%;
+    min-height: calc(100vh - var(--topbar-height));
     margin-left: var(--sidebar-width);
     padding: var(--container-padding);
     display: flex;

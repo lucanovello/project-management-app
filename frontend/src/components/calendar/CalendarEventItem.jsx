@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux';
 import { deleteEmployee } from '../../features/employees/employeeSlice';
 import employeeStyle from './Employees.module.css';
 
-function EmployeeItem({ employee }) {
+function CalendarEventItem({ employee }) {
     const dispatch = useDispatch();
 
     const { _id, firstName, lastName, email, phone, address, position, salary, sin } = employee;
@@ -43,4 +43,4 @@ function EmployeeItem({ employee }) {
     );
 }
 
-export default EmployeeItem;
+export default CalendarEventItem;
