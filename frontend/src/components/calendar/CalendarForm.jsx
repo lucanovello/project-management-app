@@ -9,7 +9,7 @@ import {
 } from '../../features/events/eventSlice';
 import calendarStyle from './Calendar.module.css';
 
-function CalendarForm({ setIsEditing, currentEdit, initialState, calendarRef }) {
+function CalendarForm({ setIsEditing, currentEdit, initialState, formRef }) {
     const dispatch = useDispatch();
     const [formEvent, setFormEvent] = useState(currentEdit.id ? currentEdit : initialState);
 
@@ -27,10 +27,9 @@ function CalendarForm({ setIsEditing, currentEdit, initialState, calendarRef }) 
     const onSubmit = (e) => {
         e.preventDefault();
         currentEdit.id ? dispatch(updateEvent(formEvent)) : dispatch(createEvent(formEvent));
-        console.log(calendarRef.current);
+        setFormEvent(initialState);
         dispatch(reset());
         dispatch(getEvents());
-        setFormEvent(initialState);
         setIsEditing(false);
     };
 
@@ -39,7 +38,7 @@ function CalendarForm({ setIsEditing, currentEdit, initialState, calendarRef }) 
             <h3 className={calendarStyle.eventFormTitle}>
                 {currentEdit.id ? formEvent.title : 'New Event'}
             </h3>
-            <form className={calendarStyle.eventFormWrapper} onSubmit={onSubmit}>
+            <form className={calendarStyle.eventFormWrapper} ref={formRef} onSubmit={onSubmit}>
                 {/* <div className={calendarStyle.eventFormInputRow}> */}
                 <div className={calendarStyle.eventFormInputWrapper}>
                     <label htmlFor="title" className={calendarStyle.eventFormInputLabel}>

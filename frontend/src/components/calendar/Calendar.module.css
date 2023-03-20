@@ -2,8 +2,7 @@
     width: 100%;
     height: 100%;
     min-height: 75vh;
-    display: grid;
-    grid-template-columns: 2fr 8fr;
+    display: flex;
     justify-content: center;
     align-items: flex-start;
     position: relative;
@@ -81,6 +80,17 @@
 }
 
 /* CALENDAR FORM -------------------------------*/
+.calendarFormOpen {
+    width: 100%;
+    opacity: 1;
+    transition: 0.6s ease;
+}
+.calendarFormClosed {
+    width: 0%;
+    opacity: 0;
+    transition: 0.6s ease;
+}
+
 .eventFormContainer {
     width: calc(200px + 5vw);
     margin-bottom: 6vh;

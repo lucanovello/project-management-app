@@ -10,7 +10,7 @@ import { getEvents, reset } from '../../features/events/eventSlice';
 function CalendarPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const calendarRef = useRef(null);
+    const formRef = useRef(null);
 
     const { user } = useSelector((state) => state.auth);
     const { isLoading, isError, message } = useSelector((state) => state.events);
@@ -65,33 +65,31 @@ function CalendarPage() {
     }
     return (
         <>
-            {/* {isEditing && (
-                <CalendarForm
-                    isEditing={isEditing}
-                    setIsEditing={setIsEditing}
-                    currentEdit={currentEdit}
-                    setCurrentEdit={setCurrentEdit}
-                    initialState={initialState}
-                />
-            )} */}
-
             <div className={calendarStyle.calendarPageContainer}>
-                {/* <CalendarEventList /> */}
-                <CalendarForm
-                    isEditing={isEditing}
-                    setIsEditing={setIsEditing}
-                    currentEdit={currentEdit}
-                    setCurrentEdit={setCurrentEdit}
-                    initialState={initialState}
-                    calendarRef={calendarRef}
-                />
+                <div
+                    className={
+                        isEditing
+                            ? calendarStyle.calendarFormOpen
+                            : calendarStyle.calendarFormClosed
+                    }
+                >
+                    <CalendarForm
+                        isEditing={isEditing}
+                        setIsEditing={setIsEditing}
+                        currentEdit={currentEdit}
+                        setCurrentEdit={setCurrentEdit}
+                        initialState={initialState}
+                        formRef={formRef}
+                    />
+                </div>
+
                 <Calendar
                     isEditing={isEditing}
                     setIsEditing={setIsEditing}
                     currentEdit={currentEdit}
                     setCurrentEdit={setCurrentEdit}
                     initialState={initialState}
-                    calendarRef={calendarRef}
+                    formRef={formRef}
                 />
             </div>
         </>

@@ -9,7 +9,7 @@ import { getEvents, updateEvent } from '../../features/events/eventSlice';
 import LoadingComponent from '../loading/LoadingComponent';
 import calendarStyle from './Calendar.module.css';
 
-function Calendar({ setIsEditing, setCurrentEdit, initialState, calendarRef }) {
+function Calendar({ setIsEditing, setCurrentEdit, initialState, formRef }) {
     const dispatch = useDispatch();
     const { events, isLoading, isError, message } = useSelector((state) => state.events);
 
@@ -82,7 +82,6 @@ function Calendar({ setIsEditing, setCurrentEdit, initialState, calendarRef }) {
             {/* <CalendarEventList /> */}
             <div className={calendarStyle.calendarContainer}>
                 <FullCalendar
-                    ref={calendarRef}
                     plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
                     initialView="dayGridMonth"
                     headerToolbar={{
@@ -91,8 +90,7 @@ function Calendar({ setIsEditing, setCurrentEdit, initialState, calendarRef }) {
                         right: 'dayGridMonth,timeGridWeek,listWeek',
                     }}
                     timeZone="UTC"
-                    height="auto"
-                    expandRows={false}
+                    contentHeight="auto"
                     windowResizeDelay={0}
                     selectable={true}
                     droppable={true}
@@ -103,6 +101,11 @@ function Calendar({ setIsEditing, setCurrentEdit, initialState, calendarRef }) {
                     select={handleDateClick}
                     eventClick={handleEventClick}
                     eventChange={handleEventChange}
+                    unselect={(event) =>
+                        formRef.current &&
+                        !formRef.current.contains(event.jsEvent.target) &&
+                        setIsEditing(false)
+                    }
                 />
             </div>
         </>
