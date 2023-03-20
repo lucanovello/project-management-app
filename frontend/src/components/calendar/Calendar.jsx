@@ -1,150 +1,109 @@
-import { formatDate } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { getEvents, reset } from '../../features/events/eventSlice';
+import { getEvents, updateEvent } from '../../features/events/eventSlice';
 import LoadingComponent from '../loading/LoadingComponent';
 import calendarStyle from './Calendar.module.css';
 
-function Calendar() {
-    const [currentEvents, setCurrentEvents] = useState([]);
-
-    const navigate = useNavigate();
+function Calendar({ setIsEditing, setCurrentEdit, initialState, calendarRef }) {
     const dispatch = useDispatch();
-
-    const { user } = useSelector((state) => state.auth);
     const { events, isLoading, isError, message } = useSelector((state) => state.events);
 
-    useEffect(() => {
-        if (isError) {
-            console.log(message);
-        }
+    const handleDateClick = (selected) => {
+        setCurrentEdit({
+            ...initialState,
+            start: new Date(selected.start),
+            end: new Date(selected.end),
+            allDay: selected.allDay,
+        });
+        setIsEditing(true);
+    };
 
-        if (!user) {
-            navigate('/login');
-        }
+    const handleEventClick = (selected) => {
+        setCurrentEdit({
+            title: selected.event._def.title,
+            start: new Date(selected.event._instance.range.start),
+            end: selected.event._instance.range.end
+                ? new Date(selected.event._instance.range.end)
+                : new Date(),
+            allDay: selected.event._def.allDay,
+            city: selected.event._def.extendedProps.city,
+            createdAt: selected.event._def.extendedProps.createdAt,
+            createdBy: selected.event._def.extendedProps.createdBy,
+            crew: selected.event._def.extendedProps.crew,
+            customer: selected.event._def.extendedProps.customer,
+            description: selected.event._def.extendedProps.description,
+            notes: selected.event._def.extendedProps.notes,
+            postalCode: selected.event._def.extendedProps.postalCode,
+            province: selected.event._def.extendedProps.province,
+            status: selected.event._def.extendedProps.status,
+            street: selected.event._def.extendedProps.street,
+            id: selected.event._def.extendedProps._id,
+        });
+        setIsEditing(true);
+    };
 
+    const handleEventChange = (selected) => {
+        dispatch(
+            updateEvent({
+                title: selected.event._def.title,
+                start: new Date(selected.event._instance.range.start),
+                end: new Date(selected.event._instance.range.end),
+                allDay: selected.event._def.allDay,
+                city: selected.event._def.extendedProps.city,
+                createdAt: selected.event._def.extendedProps.createdAt,
+                createdBy: selected.event._def.extendedProps.createdBy,
+                crew: selected.event._def.extendedProps.crew,
+                customer: selected.event._def.extendedProps.customer,
+                description: selected.event._def.extendedProps.description,
+                notes: selected.event._def.extendedProps.notes,
+                postalCode: selected.event._def.extendedProps.postalCode,
+                province: selected.event._def.extendedProps.province,
+                status: selected.event._def.extendedProps.status,
+                street: selected.event._def.extendedProps.street,
+                id: selected.event._def.extendedProps._id,
+            })
+        );
         dispatch(getEvents());
-
-        return () => {
-            dispatch(reset());
-        };
-    }, [user, navigate, isError, message, dispatch]);
+    };
 
     if (isLoading) {
         return <LoadingComponent text="Calendar loading" />;
     }
-
     if (isError) {
         return <h2>{message}</h2>;
     }
-
-    const handleDateClick = (selected) => {
-        const title = prompt('Please enter a new title for your event');
-        const calendarApi = selected.view.calendar;
-        calendarApi.unselect();
-        console.log(selected);
-
-        const event = {
-            title,
-            description: '',
-            address: {
-                street: '',
-                city: '',
-                province: '',
-                postalCode: '',
-            },
-            start: selected.startStr,
-            end: selected.endStr,
-            allDay: selected.allDay,
-            interactive: true,
-            extendedProps: {
-                crew: null,
-                customer: null,
-                notes: '',
-                status: 'pending',
-                createdBy: user._id,
-            },
-        };
-
-        if (title) {
-            calendarApi.addEvent({
-                ...event,
-                id: `${event.start}-${title}`,
-            });
-        }
-    };
-
-    const handleEventClick = (selected) => {
-        if (window.confirm(`Are you sure you want to delete the event '${selected.event.title}'`)) {
-            selected.event.remove();
-        }
-    };
-
     return (
         <>
-            <div className={calendarStyle.calendarPageContainer}>
-                {/* CALENDAR SIDEBAR */}
-                <div className={calendarStyle.eventsContainer}>
-                    <h5 className={calendarStyle.eventsTitle}>Events</h5>
-                    <ul className={calendarStyle.eventsList}>
-                        {currentEvents.map((event) => (
-                            <li key={event.id} className={calendarStyle.eventsListItem}>
-                                <p className={calendarStyle.eventsListItemTitle}>{event.title}</p>
-                                <p className={calendarStyle.eventsListItemText}>
-                                    {formatDate(event.start, {
-                                        year: 'numeric',
-                                        month: 'short',
-                                        day: 'numeric',
-                                    })}
-                                </p>
-                                <p className={calendarStyle.eventsListItemText}>
-                                    {event.allDay
-                                        ? 'All Day'
-                                        : `${formatDate(event.start, {
-                                              timeZone: 'local',
-                                              locale: 'en',
-                                              hour: 'numeric',
-                                          })}
-                                         - 
-                                        ${formatDate(event.end, {
-                                            timeZone: 'local',
-                                            locale: 'en',
-                                            hour: 'numeric',
-                                        })}`}
-                                </p>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-
-                <div className={calendarStyle.calendarContainer}>
-                    <FullCalendar
-                        plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
-                        initialView="dayGridMonth"
-                        headerToolbar={{
-                            left: 'prev,next today',
-                            center: 'title',
-                            right: 'dayGridMonth,timeGridWeek,listWeek',
-                        }}
-                        height="auto"
-                        expandRows={true}
-                        windowResizeDelay={0}
-                        selectable={true}
-                        editable={true}
-                        selectMirror={true}
-                        dayMaxEvents={true}
-                        select={handleDateClick}
-                        eventClick={handleEventClick}
-                        eventsSet={(events) => setCurrentEvents(events)}
-                        initialEvents={events}
-                    />
-                </div>
+            {/* <CalendarEventList /> */}
+            <div className={calendarStyle.calendarContainer}>
+                <FullCalendar
+                    ref={calendarRef}
+                    plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
+                    initialView="dayGridMonth"
+                    headerToolbar={{
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,listWeek',
+                    }}
+                    timeZone="UTC"
+                    height="auto"
+                    expandRows={false}
+                    windowResizeDelay={0}
+                    selectable={true}
+                    droppable={true}
+                    editable={true}
+                    selectMirror={true}
+                    dayMaxEvents={true}
+                    events={events}
+                    select={handleDateClick}
+                    eventClick={handleEventClick}
+                    eventChange={handleEventChange}
+                />
             </div>
         </>
     );

@@ -3,7 +3,7 @@
     height: 100%;
     min-height: 75vh;
     display: grid;
-    grid-template-columns: 1.5fr 8.5fr;
+    grid-template-columns: 2fr 8fr;
     justify-content: center;
     align-items: flex-start;
     position: relative;
@@ -48,7 +48,7 @@
     font-size: calc(var(--body-font-size) * 0.9);
     font-weight: 400;
     color: white;
-    background: hsl(210, 67%, 53%);
+    background: hsl(210, 10%, 50%);
     border-radius: 5px;
     cursor: pointer;
     transition: 0.03s ease;
@@ -82,12 +82,15 @@
 
 /* CALENDAR FORM -------------------------------*/
 .eventFormContainer {
-    width: 100%;
+    width: calc(200px + 5vw);
     margin-bottom: 6vh;
+    padding: 1em;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
+    border: 1px solid hsl(0, 0%, 65%);
+    border-radius: 5px;
 }
 
 .eventFormTitle {
@@ -95,11 +98,11 @@
     font-family: var(--header-font-family);
     font-size: calc(var(--header-font-size) * 0.8);
     font-weight: 700;
+    text-transform: capitalize;
 }
 
 .eventFormWrapper {
     width: 100%;
-    min-width: 500px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -110,26 +113,63 @@
 .eventFormInputRow {
     width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     column-gap: 10px;
 }
 
-.eventFormInput {
+.eventFormInputWrapper,
+.eventFormInputCheckboxWrapper {
     width: 100%;
     display: flex;
-    padding: 1vh 10px;
+    justify-content: flex-start;
+    position: relative;
+}
+.eventFormInputWrapper {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.eventFormInputCheckboxWrapper {
+    flex-direction: row;
+    align-items: center;
+}
+
+.eventFormInputLabel {
+    padding: 0.1em;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-family: var(--body-font-family);
+    font-size: calc(var(--body-font-size) * 0.8);
+    white-space: nowrap;
+}
+.eventFormInput {
+    width: 100%;
+}
+.eventFormInput,
+.eventFormInputCheckbox {
+    padding: 0.5vh 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     font-family: var(--body-font-family);
-    font-size: calc(var(--body-font-size) * 0.9);
+    font-size: calc(var(--body-font-size) * 0.85);
     background: hsl(0, 0%, 92%);
     border: 1px solid hsl(0, 0%, 65%);
     border-radius: 2px;
 }
 .eventFormInput::placeholder {
     color: hsl(0, 0%, 60%);
+}
+
+.eventFormBtnWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 2%;
 }
 
 .eventFormBtn {
@@ -158,5 +198,13 @@
 
 .eventFormBtn:active {
     background: hsl(210, 90%, 75%);
+    transition: 0.02s ease;
+}
+
+.delete {
+    background: hsl(0, 95%, 30%);
+}
+.delete:hover {
+    background: hsl(0, 90%, 40%);
     transition: 0.02s ease;
 }

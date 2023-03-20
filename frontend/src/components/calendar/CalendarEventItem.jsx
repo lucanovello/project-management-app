@@ -1,45 +1,91 @@
-import { useDispatch } from 'react-redux';
-import { deleteEmployee } from '../../features/employees/employeeSlice';
-import employeeStyle from './Employees.module.css';
+import { formatDate } from '@fullcalendar/core';
+import calendarStyle from './Calendar.module.css';
 
-function CalendarEventItem({ employee }) {
-    const dispatch = useDispatch();
-
-    const { _id, firstName, lastName, email, phone, address, position, salary, sin } = employee;
+function CalendarEventItem({ event }) {
+    const {
+        title,
+        start,
+        end,
+        allDay,
+        city,
+        createdAt,
+        createdBy,
+        crew,
+        customer,
+        description,
+        notes,
+        postalCode,
+        province,
+        status,
+        street,
+        _id,
+    } = event;
 
     return (
-        <>
-            <tr className={employeeStyle.employeeTableBodyRowContainer}>
-                <td className={` ${employeeStyle.name} ${employeeStyle.employeeItem}`}>
-                    {firstName}
-                </td>
-                <td className={` ${employeeStyle.name} ${employeeStyle.employeeItem}`}>
-                    {lastName}
-                </td>
-                <td className={`${employeeStyle.address} ${employeeStyle.employeeItem}`}>
-                    {address}
-                </td>
-                <td className={`${employeeStyle.employeeItem}`}>{email}</td>
-                <td className={`${employeeStyle.number} ${employeeStyle.employeeItem}`}>{phone}</td>
-                <td className={` ${employeeStyle.position} ${employeeStyle.employeeItem}`}>
-                    {position}
-                </td>
-                <td
-                    className={`${employeeStyle.salary} ${employeeStyle.number} ${employeeStyle.employeeItem}`}
-                >
-                    {salary && salary}
-                </td>
-                <td className={`${employeeStyle.number} ${employeeStyle.employeeItem}`}>{sin}</td>
-                <td className={`${employeeStyle.employeeItemDeleteBtnWrapper}`}>
-                    <button
-                        className={employeeStyle.employeeItemDeleteBtn}
-                        onClick={() => dispatch(deleteEmployee(_id))}
-                    >
-                        🞪
-                    </button>
-                </td>
-            </tr>
-        </>
+        <li key={_id} className={calendarStyle.eventsListItem}>
+            <p className={calendarStyle.eventsListItemTitle}>{title}</p>
+            <p className={calendarStyle.eventsListItemText}>{description}</p>
+            <p className={calendarStyle.eventsListItemText}>{`Start Date: ${formatDate(start, {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+            })}`}</p>
+            <p className={calendarStyle.eventsListItemText}>{`Start Time: ${formatDate(start, {
+                hour12: true,
+                hour: '2-digit',
+                minute: '2-digit',
+            })}`}</p>
+            <p className={calendarStyle.eventsListItemText}>{`End Date: ${formatDate(end, {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+            })}`}</p>
+            <p className={calendarStyle.eventsListItemText}>{`End Time: ${formatDate(end, {
+                hour12: true,
+                hour: '2-digit',
+                minute: '2-digit',
+            })}`}</p>
+
+            <p className={calendarStyle.eventsListItemText}>
+                {end !== start
+                    ? `${formatDate(start, {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                      })} - ${formatDate(end, {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                      })}`
+                    : formatDate(start, {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                      })}
+            </p>
+
+            <p
+                className={calendarStyle.eventsListItemText}
+            >{`${street}, ${city}, ${postalCode}`}</p>
+            <p className={calendarStyle.eventsListItemText}>
+                {'Time: '}
+                {allDay
+                    ? 'All Day'
+                    : `${formatDate(start, {
+                          timeZone: 'local',
+                          locale: 'en',
+                          hour: 'numeric',
+                      })}
+                 - 
+                ${formatDate(end, {
+                    timeZone: 'local',
+                    locale: 'en',
+                    hour: 'numeric',
+                })}`}
+            </p>
+            <p className={calendarStyle.eventsListItemText}>{`Crew: ${crew}`}</p>
+            <p className={calendarStyle.eventsListItemText}>{`Status: ${status}`}</p>
+        </li>
     );
 }
 

@@ -5,9 +5,12 @@ const Event = require('../models/eventModel');
 // @route   GET /api/events
 // @access  Private
 const getEvents = asyncHandler(async (req, res) => {
-    const events = await Event.find();
-
-    res.status(200).json(events);
+    try {
+        const events = await Event.find();
+        res.status(200).json(events);
+    } catch (error) {
+        res.status(400).json(error);
+    }
 });
 
 // @desc    Set event
@@ -25,17 +28,14 @@ const setEvent = asyncHandler(async (req, res) => {
         res.status(401);
         throw new Error('User not authorized');
     }
-
     try {
         const event = await Event.create({
             title: req.body.title,
             description: req.body.description,
-
             street: req.body.street,
             city: req.body.city,
             province: req.body.province,
             postalCode: req.body.postalCode,
-
             allDay: req.body.allDay,
             start: req.body.start,
             end: req.body.end,
@@ -46,42 +46,39 @@ const setEvent = asyncHandler(async (req, res) => {
             createdBy: req.body.createdBy,
             createdAt: req.body.createdAt,
         });
-        console.log(event);
         res.status(200).json(event);
     } catch (error) {
         res.status(400).json(error);
-        console.log(error);
     }
 });
 
 // @desc    Update event
-// @route   PUT /api/events/:id
+// @route   PUT /api/events/
 // @access  Private
 const updateEvent = asyncHandler(async (req, res) => {
-    const event = await Event.findById(req.params.id);
-
-    if (!event) {
+    if (!req.body) {
         res.status(400);
         throw new Error('Event not found');
     }
-
     // Check for user
     if (!req.user) {
         res.status(401);
         throw new Error('User not found');
     }
-
     // Make sure the logged in user matches the event user
-    if (event.user.toString() !== req.user.id) {
+    if (req.body.createdBy.toString() !== req.user.id) {
         res.status(401);
         throw new Error('User not authorized');
     }
 
-    const updatedEvent = await Event.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-    });
-
-    res.status(200).json(updatedEvent);
+    try {
+        const updatedEvent = await Event.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+        });
+        res.status(200).json(updatedEvent);
+    } catch (error) {
+        res.status(400).json(error);
+    }
 });
 
 // @desc    Delete event
@@ -105,10 +102,12 @@ const deleteEvent = asyncHandler(async (req, res) => {
         res.status(401);
         throw new Error('User not authorized');
     }
-
-    await event.remove();
-
-    res.status(200).json({ id: req.params.id });
+    try {
+        await event.remove();
+        res.status(200).json({ id: req.params.id });
+    } catch (error) {
+        res.status(400).json(error);
+    }
 });
 
 module.exports = {

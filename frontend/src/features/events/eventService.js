@@ -28,6 +28,18 @@ const getEvents = async (token) => {
     return response.data;
 };
 
+// Update event
+const updateEvent = async (eventId, eventData, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    };
+
+    const response = await axios.put(API_URL + eventId, eventData, config);
+    return response.data;
+};
+
 // Delete user event
 const deleteEvent = async (eventId, token) => {
     const config = {
@@ -44,6 +56,7 @@ const deleteEvent = async (eventId, token) => {
 const eventService = {
     createEvent,
     getEvents,
+    updateEvent,
     deleteEvent,
 };
 

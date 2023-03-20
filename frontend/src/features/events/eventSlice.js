@@ -37,6 +37,20 @@ export const getEvents = createAsyncThunk('events/getAll', async (_, thunkAPI) =
     }
 });
 
+// Update event
+export const updateEvent = createAsyncThunk('events/update', async (eventData, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token;
+        return await eventService.updateEvent(eventData.id, eventData, token);
+    } catch (error) {
+        const message =
+            (error.response && error.response.data && error.response.data.message) ||
+            error.message ||
+            error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
+});
+
 // Delete user event
 export const deleteEvent = createAsyncThunk('events/delete', async (id, thunkAPI) => {
     try {
@@ -72,15 +86,29 @@ export const eventSlice = createSlice({
                 state.isError = true;
                 state.message = action.payload;
             })
-            .addCase(getEvents.pending, (state) => {
-                state.isLoading = true;
-            })
+            // .addCase(getEvents.pending, (state) => {
+            //     state.isLoading = true;
+            // })
             .addCase(getEvents.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
                 state.events = action.payload;
             })
             .addCase(getEvents.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+            })
+            // .addCase(updateEvent.pending, (state) => {
+            //     state.isLoading = true;
+            // })
+            .addCase(updateEvent.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.events = state.events.filter((event) => event._id !== action.payload.id);
+                state.events.push(action.payload);
+            })
+            .addCase(updateEvent.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;
